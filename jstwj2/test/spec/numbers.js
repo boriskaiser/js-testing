@@ -1,6 +1,6 @@
 /*globals define, describe, it, expect, beforeEach, jasmine*/
 
-define(['numbers'], function (numbers) {
+define(['numbers', 'events', 'lib/matchers'], function (numbers, events, matchers) {
     'use strict';
 
     describe('The numbers module', function () {
@@ -13,6 +13,8 @@ define(['numbers'], function (numbers) {
                 this.numberInput2 = 2;
                 this.stringInput1 = '1';
                 this.stringInput2 = 'oops';
+
+                jasmine.addMatchers(matchers);
             });
 
             it('should accept one or more numberical arguments and return sum of them', function () {
@@ -39,6 +41,65 @@ define(['numbers'], function (numbers) {
                 output = numbers.add(this.numberInput1, this.stringInput2);
 
                 expect(output).toEqual(1);
+            });
+
+            it('should publish an added event showing the operands passed to the method and the result', function () {
+                var x, length, calls;
+
+                spyOn(events, 'publish');
+                //spyOn(events, 'publish').and.callThrough();
+
+                //spyOn(events, 'publish').and.returnValue(false);
+
+                //spyOn(events, 'publish').and.callFake(function (name) {
+                //    window.alert(name);
+                //});
+
+                //events.publish.and.stub();
+
+                //spyOn(events, 'publish').and.throwError('oops');
+                //expect(function () {
+                //    numbers.add(1, 1);
+                //}).toThrowError('oops');
+
+                expect(events.publish.calls.any()).toBe(false);
+
+                numbers.add(this.numberInput1, this.numberInput2);
+
+                expect(events.publish).toHaveBeenCalled();
+                expect(events.publish).toHaveBeenCalledWith('added', {
+                    operands: [this.numberInput1, this.numberInput2],
+                    result: 3
+                });
+
+                expect(events.publish.calls.any()).toBe(true);
+                expect(events.publish.calls.count()).toEqual(1);
+
+                numbers.add(this.numberInput1, this.stringInput1);
+                expect(events.publish.calls.count()).toEqual(2);
+
+                expect(events.publish.calls.argsFor(1)).toEqual([jasmine.any(String), jasmine.any(Object)]);
+
+                expect(events.publish.calls.allArgs()).toEqual([
+                    [jasmine.any(String), jasmine.any(Object)],
+                    [jasmine.any(String), jasmine.any(Object)]
+                ]);
+
+                calls = events.publish.calls.all();
+
+                for (x = 0, length = calls.length; x < length; x += 1) {
+                    expect(calls[x].object.id).toEqual('events');
+                }
+            });
+
+            it('should return numbers that are either odd or even', function () {
+                output = numbers.add(this.numberInput1, this.numberInput2);
+                expect(output).toBeOdd();
+
+                output = numbers.add(this.numberInput1, this.numberInput1);
+                expect(output).not.toBeOdd();
+
+                //expect(2).toBeOdd();
             });
         });
 
