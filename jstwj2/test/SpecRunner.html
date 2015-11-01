@@ -14,19 +14,17 @@
     <script src="lib/jasmine-2.3.4/boot.js"></script>
 </head>
 
-<script src="../"></script>
-
 <body>
-<script>
-    require({
-        baseUrl: '../dev/scripts',
-        paths: {
-            spec: '../../test/spec'
+    <script>
+        require({
+            baseUrl: '../dev/scripts',
+            paths: {
+                spec: '../../test/spec'
 
-        }
-    }, ['spec/numbers'], function (numbers) {
-        jasmine.getEnv().execute();
-    });
-</script>
+            }
+        }, ['spec/numbers'], function () {
+            jasmine.getEnv().execute();
+        });
+    </script>
 </body>
 </html>

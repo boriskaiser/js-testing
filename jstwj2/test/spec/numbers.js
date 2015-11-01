@@ -1,6 +1,6 @@
-/*globals define, describe*/
+/*globals define, describe, it, expect, beforeEach, jasmine*/
 
-define(['numbers', function (numbers) {
+define(['numbers'], function (numbers) {
     'use strict';
 
     describe('The numbers module', function () {
@@ -8,8 +8,8 @@ define(['numbers', function (numbers) {
         describe('The add method', function () {
 
 
-
         });
 
     });
-}]);
+
+});
