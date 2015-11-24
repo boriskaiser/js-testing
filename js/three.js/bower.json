@@ -1,0 +1,14 @@
+{
+  "name": "three.js",
+  "version": "0.0.0",
+  "homepage": "https://github.com/boriskaiser/knowledge",
+  "authors": [
+    "Boris Kaiser <mail@boriskaiser.com>"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "threejs": "*",
+    "stats.js": "*",
+    "dat-gui": "*"
+  }
+}
