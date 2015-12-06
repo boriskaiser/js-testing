@@ -7,7 +7,7 @@ var users = db.collection('users');
 
 var crypto = require('crypto');
 function hash(password) {
-  return crypto.createhash('sha512').update(password).digest('hex');
+  return crypto.createHash('sha512').update(password).digest('hex');
 }
 
 
@@ -49,5 +49,55 @@ router.get('/login', function (req, res) {
   res.render('login');
 });
 
+router.post('/signup', function (req, res, next) {
+  if (users.where({username: req.body.username}).items.length === 0) {
+    var user = {
+      fullname: req.body.fullname,
+      username: req.body.username,
+      passwordHash: hash(req.body.password),
+      following: []
+    };
+
+    var userId = users.insert(user);
+    req.login(users.get(userId), function (err) {
+      if (err) return next(err);
+      res.redirect('/');
+
+    });
+  } else {
+    res.redirect('/login');
+  }
+});
+
+router.post('/login', passport.authenticate('local', {
+  successRedirect: '/',
+  failureRedirect: '/login'
+}));
+
+router.get('/logout', function (req, res) {
+  req.logout();
+  res.redirect('/login');
+});
+
+function loginRequire (req, res, next) {
+  if(req.isAuthenticated()) {
+    next();
+  } else {
+    res.redirect('/login');
+  }
+}
+
+function makeUserSafe (user) {
+  var safeUser = {};
+  var safeKeys = ['cid', 'fullname', 'email', 'username', 'following'];
+
+  safeKeys.forEach(function (key) {
+    safeUser[key] = user[key];
+  });
+
+  return safeUser;
+}
 
 exports.routes = router;
+exports.required = loginRequire;
+exports.safe = makeUserSafe;
