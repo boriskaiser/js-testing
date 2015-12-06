@@ -1,4 +1,6 @@
-/**  Char at **/
+/**
+ * Char at
+ */
 
 "0123".charAt("1"); // "1"
 "0123".charAt(1.45); // "1"
@@ -15,7 +17,9 @@ Boolean.prototype.charAt = String.prototype.charAt;
 true.charAt(); // "t"
 
 
-/** Array & undefined **/
+/**
+ * Array & undefined
+ */
 
 Array(2); // [undefined, undefined]
 
