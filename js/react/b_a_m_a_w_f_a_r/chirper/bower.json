@@ -1,0 +1,12 @@
+{
+  "private": true,
+  "name": "chirper",
+  "description": "A very simple twitter clone buit with React and Flux",
+  "main": "server.js",
+  "license": "MIT",
+  "moduleType": [],
+  "ignore": [],
+  "dependencies": {
+    "skeleton": "~2.0.4"
+  }
+}
